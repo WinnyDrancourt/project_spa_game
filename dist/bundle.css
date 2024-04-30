@@ -113,12 +113,22 @@ body {
 }
 
 .article h2 {
-  font-size: 70px;
+  font-size: 56px;
 }
 .article h3 {
   font-size: 70px;
   color: #D20A32;
   margin: 0;
+}
+.article #title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.article #title #rating {
+  font-size: 21px;
+  color: #D20A32;
+  font-weight: bold;
 }
 .article .img {
   object-fit: cover;
@@ -138,7 +148,7 @@ body {
   justify-content: space-around;
 }
 .article .more div {
-  margin-right: 25px;
+  width: 100%;
 }
 .article .screenshots {
   display: flex;

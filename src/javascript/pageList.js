@@ -16,7 +16,6 @@ export const PageList = (argument = '') => {
 
     const platformFilter = Array.from(document.querySelectorAll('#platform-filter input:checked')).map(checkbox => checkbox.value);
 
-
     try {
       const list = await fetchList(cleanedArgument, pageSize);
       displayResults(list.results, platformFilter);
@@ -25,10 +24,8 @@ export const PageList = (argument = '') => {
     }
   };
 
-
   const displayResults = (articles, platformFilter) => {
     const filteredArticles = platformFilter.length > 0 ? articles.filter(article => article.parent_platforms.some(platform => platform.platform.slug && platformFilter.includes(platform.platform.slug))) : articles;
-
 
     if (filteredArticles.length < 9) {
       pageSize += 9;

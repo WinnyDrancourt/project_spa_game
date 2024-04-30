@@ -127,12 +127,24 @@ body {
 .article {
 
   h2 {
-    font-size: $textSize * 5;
+    font-size: $textSize * 4;
   }
   h3 {
     font-size: $textSize * 5;
     color: $redColor;
     margin: 0;
+  }
+
+  #title {
+    display:flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    #rating {
+    font-size: $textSize *1.5;
+    color: $redColor;
+    font-weight: bold;
+    }
   }
 
   .img {
@@ -156,8 +168,9 @@ body {
     justify-content: space-around;
 
     div {
-      margin-right: 25px;
+      width: 100%;
     }
+
   }
 
   .screenshots {

@@ -22,7 +22,10 @@ export const PageDetail = (argument = '') => {
 <section class="page-detail">
   <div class="article">
     <img class="img" src="">
+      <div id='title'>
     <h2 class="title"></h2>
+      <p id='rating'></p>
+      </div>
     <p class="description"></p>
     <div class='about'>
       <div>
@@ -69,9 +72,10 @@ export const PageDetail = (argument = '') => {
 };
 
 const displayGame = async (gameData, trailerData, screenData) => {
-  const { name, released, description, background_image, developers, parent_platforms, publishers, genres, tags, stores} = gameData;
+  const { name, released, description, background_image, developers, parent_platforms, publishers, genres, tags, stores, rating, ratings_count} = gameData;
   const articleDOM = document.querySelector(".page-detail .article");
   articleDOM.querySelector("h2.title").innerHTML = name;
+  articleDOM.querySelector("p#rating").innerHTML = `${rating}/5 - ${ratings_count} votes`;
   articleDOM.querySelector("p.release-date span").innerHTML = released;
   articleDOM.querySelector("p.description").innerHTML = description;
   articleDOM.querySelector("p.dev").innerHTML = developers[0].name;
