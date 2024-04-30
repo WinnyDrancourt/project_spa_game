@@ -1,0 +1,178 @@
+$backColor: #191919;
+$whiteColor: #FFFFFF;
+$mutedColor: #4b4b4b;
+$redColor: #D20A32;
+$textSize: 14px;
+$font: "Google Sans", Roboto, arial, sans-serif;
+
+header {
+  position: sticky;
+  top: 0;
+  background-color: $backColor;
+  z-index: 1000;
+}
+
+body {
+  background-color: $backColor;
+  color: $whiteColor;
+  font-family: $font;
+}
+
+#nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  a{
+    font-size: $textSize *1.5;
+    color: $redColor;
+    text-decoration: none;
+  }
+}
+
+#presentation h2 {
+  font-size: $textSize *2;
+}
+
+#game-search {
+  padding: 0px 45px;
+  color: $mutedColor;
+  background-color: transparent;
+  width: 25%;
+  height: 40px;
+  border: 1px solid $whiteColor;
+  border-radius: 25px;
+}
+
+#platform-filter {
+  display: flex;
+  align-items: center;
+
+  input[type='checkbox'] {
+    background-color: transparent;
+    border: 1px solid $whiteColor;
+    border-radius: 10px;
+  }
+
+  label{
+    margin: 0 5px 0 0;
+  }
+
+  h3 {
+    color: $redColor;
+    margin: 0 5px 0 0;
+  }
+}
+
+.page-list{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.articles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 25px 0 0 0;
+
+
+  a img{
+    object-fit: cover;
+    height: 400px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: $textSize *1.5;
+    margin: 0px;
+  }
+}
+
+.show-more-btn {
+  margin-top: 25px;
+  width: 220px;
+  height: 40px;
+  background-color: $redColor;
+  color: $whiteColor;
+  border: 0;
+  font-size: $textSize *1.5;
+  font-weight: bold;
+}
+
+.cardGame {
+  display: inline-block;
+  width: calc(33.33% - 10px); /* Pour 3 éléments côte à côte */
+  margin: 5px;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 992px) {
+  .cardGame {
+    width: calc(50% - 10px); /* Pour 2 éléments côte à côte sur des écrans plus petits */
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .cardGame {
+    width: 100%; /* Pour 1 élément par ligne sur des écrans encore plus petits */
+  }
+}
+
+#page-content {
+  margin: 0 10vh;
+}
+
+.article {
+
+  h2 {
+    font-size: $textSize * 5;
+  }
+  h3 {
+    font-size: $textSize * 5;
+    color: $redColor;
+    margin: 0;
+  }
+
+  .img {
+    object-fit: cover;
+    width: 100vw;
+    position: relative;
+    left: -10vh;
+  }
+
+  .about {
+    display: flex;
+    justify-content: space-between;
+
+    ul {
+      padding: 0;
+    }
+  }
+
+  .more {
+    display: flex;
+    justify-content: space-around;
+
+    div {
+      margin-right: 25px;
+    }
+  }
+
+  .screenshots {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+
+    .screen {
+      width: 48%;
+    }
+    img {
+      object-fit: scale-down;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+

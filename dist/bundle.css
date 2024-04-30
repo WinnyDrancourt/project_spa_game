@@ -1,0 +1,155 @@
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/.pnpm/css-loader@7.1.1_webpack@5.91.0_webpack-cli@5.1.4_/node_modules/css-loader/dist/cjs.js!./node_modules/.pnpm/postcss-loader@8.1.1_postcss@8.4.38_webpack@5.91.0_webpack-cli@5.1.4_/node_modules/postcss-loader/dist/cjs.js!./node_modules/.pnpm/sass-loader@14.2.1_sass@1.75.0_webpack@5.91.0_webpack-cli@5.1.4_/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[2].use[3]!./src/style/main.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+header {
+  position: sticky;
+  top: 0;
+  background-color: #191919;
+  z-index: 1000;
+}
+
+body {
+  background-color: #191919;
+  color: #FFFFFF;
+  font-family: "Google Sans", Roboto, arial, sans-serif;
+}
+
+#nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#nav a {
+  font-size: 21px;
+  color: #D20A32;
+  text-decoration: none;
+}
+
+#presentation h2 {
+  font-size: 28px;
+}
+
+#game-search {
+  padding: 0px 45px;
+  color: #4b4b4b;
+  background-color: transparent;
+  width: 25%;
+  height: 40px;
+  border: 1px solid #FFFFFF;
+  border-radius: 25px;
+}
+
+#platform-filter {
+  display: flex;
+  align-items: center;
+}
+#platform-filter input[type=checkbox] {
+  background-color: transparent;
+  border: 1px solid #FFFFFF;
+  border-radius: 10px;
+}
+#platform-filter label {
+  margin: 0 5px 0 0;
+}
+#platform-filter h3 {
+  color: #D20A32;
+  margin: 0 5px 0 0;
+}
+
+.page-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.articles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 25px 0 0 0;
+}
+.articles a img {
+  object-fit: cover;
+  height: 400px;
+  width: 100%;
+}
+.articles h1 {
+  font-size: 21px;
+  margin: 0px;
+}
+
+.show-more-btn {
+  margin-top: 25px;
+  width: 220px;
+  height: 40px;
+  background-color: #D20A32;
+  color: #FFFFFF;
+  border: 0;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.cardGame {
+  display: inline-block;
+  width: calc(33.33% - 10px); /* Pour 3 éléments côte à côte */
+  margin: 5px;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 992px) {
+  .cardGame {
+    width: calc(50% - 10px); /* Pour 2 éléments côte à côte sur des écrans plus petits */
+  }
+}
+@media screen and (max-width: 600px) {
+  .cardGame {
+    width: 100%; /* Pour 1 élément par ligne sur des écrans encore plus petits */
+  }
+}
+#page-content {
+  margin: 0 10vh;
+}
+
+.article h2 {
+  font-size: 70px;
+}
+.article h3 {
+  font-size: 70px;
+  color: #D20A32;
+  margin: 0;
+}
+.article .img {
+  object-fit: cover;
+  width: 100vw;
+  position: relative;
+  left: -10vh;
+}
+.article .about {
+  display: flex;
+  justify-content: space-between;
+}
+.article .about ul {
+  padding: 0;
+}
+.article .more {
+  display: flex;
+  justify-content: space-around;
+}
+.article .more div {
+  margin-right: 25px;
+}
+.article .screenshots {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+.article .screenshots .screen {
+  width: 48%;
+}
+.article .screenshots img {
+  object-fit: scale-down;
+  width: 100%;
+  height: auto;
+}
