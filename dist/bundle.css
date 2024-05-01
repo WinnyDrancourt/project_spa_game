@@ -82,12 +82,13 @@ body {
 .show-more-btn {
   margin-top: 25px;
   width: 220px;
-  height: 40px;
+  height: 50px;
   background-color: #D20A32;
   color: #FFFFFF;
   border: 0;
   font-size: 21px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .cardGame {
@@ -96,6 +97,26 @@ body {
   margin: 5px;
   vertical-align: top;
   box-sizing: border-box;
+  position: relative;
+}
+
+.cardGame:hover::before {
+  content: attr(data-release-date) "\a" attr(data-publisher) "\a" attr(data-genres);
+  position: absolute;
+  top: 0%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 5px;
+  z-index: 1;
+  transition: opacity 0.3s;
+  opacity: 0;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.cardGame:hover::before {
+  opacity: 1;
 }
 
 @media screen and (max-width: 992px) {
@@ -120,6 +141,31 @@ body {
   color: #D20A32;
   margin: 0;
 }
+.article .content a, .article a:visited {
+  text-decoration: none;
+  position: relative;
+  color: #AFAFAF;
+}
+.article .content a:after, .article a:visited:after {
+  content: "";
+  height: 3px;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  background: #D20A32;
+  transition: 0.2s;
+}
+.article .content a:hover:after, .article a:visited:hover:after {
+  width: 100%;
+}
+.article .content a.block, .article a:visited.block {
+  display: block;
+  padding: 0.5em;
+}
+.article .content a.block:hover, .article a:visited.block:hover {
+  background: #eee;
+}
 .article #title {
   display: flex;
   align-items: baseline;
@@ -130,11 +176,27 @@ body {
   color: #D20A32;
   font-weight: bold;
 }
+.article .imgContainer {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
 .article .img {
   object-fit: cover;
   width: 100vw;
   position: relative;
   left: -10vh;
+  display: block;
+}
+.article .external {
+  background-color: #D20A32;
+  padding: 15px 40px;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-decoration: none;
+  position: absolute;
+  bottom: 5%;
+  right: -5%;
 }
 .article .about {
   display: flex;
@@ -162,4 +224,49 @@ body {
   object-fit: scale-down;
   width: 100%;
   height: auto;
+}
+
+footer {
+  position: relative;
+}
+footer div {
+  display: flex;
+  align-items: baseline;
+  margin: 5% 0 3% 7%;
+}
+footer a, footer a:visited {
+  margin: 10px;
+  text-decoration: none;
+  position: relative;
+  color: #AFAFAF;
+}
+footer a:after, footer a:visited:after {
+  content: "";
+  height: 3px;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  background: #D20A32;
+  transition: 0.2s;
+}
+footer a:hover:after, footer a:visited:hover:after {
+  width: 100%;
+}
+footer a.block, footer a:visited.block {
+  display: block;
+  padding: 0.5em;
+}
+footer a.block:hover, footer a:visited.block:hover {
+  background: #eee;
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: 7%;
+  width: 15%;
+  height: 15px;
+  background-color: #D20A32;
 }

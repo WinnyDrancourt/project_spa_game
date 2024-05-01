@@ -8,7 +8,6 @@ export const PageDetail = (argument = '') => {
       const gameData = await fetchGame(cleanedArgument);
       const trailerData = await fetchGameTrailer(cleanedArgument);
       const screenData = await fetchGameSreen(cleanedArgument);
-      console.log(screenData);
 
       displayGame(gameData, trailerData, screenData);
     }catch (error) {
@@ -21,11 +20,15 @@ export const PageDetail = (argument = '') => {
     pageContent.innerHTML = `
 <section class="page-detail">
   <div class="article">
+    <div class='imgContainer'>
     <img class="img" src="">
-      <div id='title'>
-    <h2 class="title"></h2>
-      <p id='rating'></p>
+        <a class='external' href=''>Check Website</a>
       </div>
+    <div class='content'>
+    <div id='title'>
+      <h2 class="title"></h2>
+      <p id='rating'></p>
+    </div>
     <p class="description"></p>
     <div class='about'>
       <div>
@@ -34,7 +37,7 @@ export const PageDetail = (argument = '') => {
       </div>
       <div>
         <p><strong>Developer :</strong></p>
-        <p class="dev"></p>
+        <ul class="dev"></ul>
       </div>
       <div>
         <p><strong>Platforms</strong></p>
@@ -57,13 +60,15 @@ export const PageDetail = (argument = '') => {
     </div>
     <h3>Buy</h3>
     <ul class="store"></ul>
-    <h3>Trailer</h3>
+    <h3 class='trailer'>Trailer</h3>
     <div class='trailer'></div>
     <h3>Screenshots</h3>
     <div class='screenshots'></div>
   </div>
+    </div>
 </section>
 `;
+
 
     preparePage();
   };
@@ -72,26 +77,30 @@ export const PageDetail = (argument = '') => {
 };
 
 const displayGame = async (gameData, trailerData, screenData) => {
-  const { name, released, description, background_image, developers, parent_platforms, publishers, genres, tags, stores, rating, ratings_count} = gameData;
+  const { name, released, description, background_image, developers, parent_platforms, publishers, genres, tags, stores, rating, ratings_count, website} = gameData;
   const articleDOM = document.querySelector(".page-detail .article");
   articleDOM.querySelector("h2.title").innerHTML = name;
   articleDOM.querySelector("p#rating").innerHTML = `${rating}/5 - ${ratings_count} votes`;
   articleDOM.querySelector("p.release-date span").innerHTML = released;
   articleDOM.querySelector("p.description").innerHTML = description;
-  articleDOM.querySelector("p.dev").innerHTML = developers[0].name;
+  developers.forEach((dev)=>{
+    articleDOM.querySelector("ul.dev").innerHTML += `<li><a href='#pagelist/devId=${dev.id}'>${dev.name}</a></li>`;});
   articleDOM.querySelector("p.publisher").innerHTML = publishers[0].name;
   parent_platforms.forEach((platform)=>{
-    articleDOM.querySelector("ul.platform").innerHTML +=`<li>${platform.platform.name}</li>`;});
-  let genresList = genres.map(genre => genre.name).join(', ');
+    articleDOM.querySelector("ul.platform").innerHTML +=`<li><a href='#pagelist/platId=${platform.platform.id}'>${platform.platform.name}</li>`;});
+  let genresList = genres.map(genre => `<a href='#pagelist/genreId=${genre.id}'>${genre.name}</a>`).join(', ');
   articleDOM.querySelector("p.genres").innerHTML =genresList;
-  let tagsList = tags.map(tag => tag.name).join(', ');
+  let tagsList = tags.map(tag => `<a href='#pagelist/tagId=${tag.id}'>${tag.name}</a>`).join(', ');
   articleDOM.querySelector("p.tags").innerHTML =tagsList;
   stores.forEach((store)=>{
-    articleDOM.querySelector("ul.store").innerHTML +=`<li>${store.store.name}</li>`;});
+    articleDOM.querySelector("ul.store").innerHTML +=`<li><a href='http://${store.store.domain}'>${store.store.name}</li>`;});
   articleDOM.querySelector("img.img").src = background_image;
+  articleDOM.querySelector('a.external').href = website;
   if (trailerData.results.length > 0) {
-    articleDOM.querySelector("div.trailer").innerHTML = `<iframe width="100%" height="525" src="${trailerData.results[0].data.max}" frameborder="0" allowfullscreen></iframe>`;
-  }
+    articleDOM.querySelector("div.trailer").innerHTML = `<video width="100%" controls><source src='${trailerData.results[0].data.max}' type='video/mp4'></video>`;
+  }else{
+    articleDOM.querySelector('h3.trailer').style.display = 'none';}
   let screenList = screenData.results.slice(0, 4).map(screen => `<div class='screen'><img src="${screen.image}"></div>`).join('');
   articleDOM.querySelector(".screenshots").innerHTML = screenList;
+
 };

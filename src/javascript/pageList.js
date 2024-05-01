@@ -1,48 +1,62 @@
-import { fetchList } from "./api";
+import { fetchChoice, fetchGame } from "./api";
 
 const searchBox = document.getElementById('game-search'); 
 
 export const PageList = (argument = '') => {
   let pageSize = 9;
+
   const preparePage = async () => {
-    const cleanArgument = argument.trim().replace(/\s+/g, '-');
+    let devId = null;
+    let tagId = null;
+    let genreId = null;
+    let platformId = null;
+
+    const argumentParts = argument.split('=');
+    if (argumentParts.length === 2) {
+      const argumentName = argumentParts[0];
+      const argumentValue = argumentParts[1];
+      switch (argumentName) {
+        case 'devId':
+          devId = argumentValue;
+          break;
+        case 'tagId':
+          tagId = argumentValue;
+          break;
+        case 'genreId':
+          genreId = argumentValue;
+          break;
+        case 'platId':
+          platformId = [argumentValue];
+          console.log(platformId);
+          break;
+        default:
+          break;
+      }
+    }
     const search = searchBox.value.trim();
-    let cleanedArgument;
-    if (search.length > 3) {
-      cleanedArgument = search;
-    }else{
-      cleanedArgument = cleanArgument;
-    }
+    platformId = Array.from(document.querySelectorAll('#platform-filter input:checked')).map(checkbox => checkbox.value);
 
-    const platformFilter = Array.from(document.querySelectorAll('#platform-filter input:checked')).map(checkbox => checkbox.value);
+    let result = await fetchChoice(search, pageSize, platformId, devId, genreId, tagId);
+    displayResults(result.results);
 
-    try {
-      const list = await fetchList(cleanedArgument, pageSize);
-      displayResults(list.results, platformFilter);
-    }catch (error){
-      console.error('Error fetch :', error);
-    }
-  };
 
-  const displayResults = (articles, platformFilter) => {
-    const filteredArticles = platformFilter.length > 0 ? articles.filter(article => article.parent_platforms.some(platform => platform.platform.slug && platformFilter.includes(platform.platform.slug))) : articles;
-
-    if (filteredArticles.length < 9) {
-      pageSize += 9;
-      preparePage();
-      return;
-    }
-
-    const resultsContent = filteredArticles.map((article) => {
+};
+    
+  const displayResults = async (articles) => {
+    const resultsContent = await Promise.all(articles.map(async (article) => {
+      let more = await fetchGame(article.id);
+      let publisher = more.publishers.map(publisher=> publisher.name).join(', ');
+      console.log(publisher);
       const platformsList = article.parent_platforms.map(platform => platform.platform.name).join(', ');
+      const genres = article.genres.map(genre=> genre.name).join(', ');
       return (
-        `<article class="cardGame">
+        `<article class="cardGame" data-release-date='Release in : ${article.released}' data-publisher='Publishers : ${publisher}' data-genres='Genres : ${genres}'>
 <a href="#pagedetail/${article.id}"><img src="${article.background_image}"></a>
 <h1>${article.name}</h1>
 <p>Plateformes: ${platformsList}</p>
 </article>`
       );
-    });
+    }));
 
     const resultsContainer = document.querySelector('.page-list .articles');
     resultsContainer.innerHTML = resultsContent.join("\n");
@@ -51,6 +65,10 @@ export const PageList = (argument = '') => {
   const showMore = () => {
     pageSize += 9;
     preparePage();
+    if (pageSize >=27) {
+      const showMoreBtn = document.querySelector('.show-more-btn');
+      showMoreBtn.style.display = 'none';
+    }
   };
 
   const render = () => {
@@ -67,16 +85,15 @@ export const PageList = (argument = '') => {
   </div>
 
   <div class="filter-container">
-
     <div id="platform-filter">
       <h3>Platform :</h3>
-      <input type="checkbox" id="pc" value="pc">
+      <input type="checkbox" id="pc" value="1">
       <label for="pc">PC</label>
-      <input type="checkbox" id="playstation" value="playstation">
+      <input type="checkbox" id="playstation" value="2">
       <label for="playstation">PlayStation</label>
-      <input type="checkbox" id="xbox" value="xbox">
+      <input type="checkbox" id="xbox" value="3">
       <label for="xbox">Xbox</label>
-      <input type="checkbox" id="nintendo" value="nintendo">
+      <input type="checkbox" id="nintendo" value="7">
       <label for="nintendo">Nintendo</label>
     </div>
   </div>
@@ -90,9 +107,14 @@ export const PageList = (argument = '') => {
 
     searchBox.addEventListener('keyup', preparePage);
 
-    document.getElementById('platform-filter').addEventListener('change', preparePage);
+    const platformCheckboxes = document.querySelectorAll('#platform-filter input');
+    platformCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', preparePage);
+    });
 
     preparePage();
+
+      
   };
 
   render();
