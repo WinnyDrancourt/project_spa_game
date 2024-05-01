@@ -4,13 +4,12 @@ const searchBox = document.getElementById('game-search');
 
 export const PageList = (argument = '') => {
   let pageSize = 9;
-
   const preparePage = async () => {
+    // lecture de l'url pour recuperer les infos et filtrer en consequences
     let devId = null;
     let tagId = null;
     let genreId = null;
     let platformId = null;
-
     const argumentParts = argument.split('=');
     if (argumentParts.length === 2) {
       const argumentName = argumentParts[0];
@@ -27,30 +26,33 @@ export const PageList = (argument = '') => {
           break;
         case 'platId':
           platformId = [argumentValue];
-          console.log(platformId);
           break;
         default:
           break;
       }
     }
+    // ecoute de la barre de recherche
     const search = searchBox.value.trim();
+    // recuperation des Checkbox pour filtrer en fonction des plateformes
     platformId = Array.from(document.querySelectorAll('#platform-filter input:checked')).map(checkbox => checkbox.value);
 
+    //Recuperation des resultats filtrer par l'api
     let result = await fetchChoice(search, pageSize, platformId, devId, genreId, tagId);
     displayResults(result.results);
 
 
-};
-    
+  };
+
   const displayResults = async (articles) => {
+    // map des resultats pour recuperer les donne de chaque index
     const resultsContent = await Promise.all(articles.map(async (article) => {
+      // ajout pour avoir des infos supplementaire non dispo en search
       let more = await fetchGame(article.id);
       let publisher = more.publishers.map(publisher=> publisher.name).join(', ');
-      console.log(publisher);
       const platformsList = article.parent_platforms.map(platform => platform.platform.name).join(', ');
       const genres = article.genres.map(genre=> genre.name).join(', ');
       return (
-        `<article class="cardGame" data-release-date='Release in : ${article.released}' data-publisher='Publishers : ${publisher}' data-genres='Genres : ${genres}'>
+        `<article class="cardGame" data-aos="flip-left" data-release-date='Release in : ${article.released}' data-publisher='Publishers : ${publisher}' data-genres='Genres : ${genres}'>
 <a href="#pagedetail/${article.id}"><img src="${article.background_image}"></a>
 <h1>${article.name}</h1>
 <p>Plateformes: ${platformsList}</p>
@@ -114,9 +116,10 @@ export const PageList = (argument = '') => {
 
     preparePage();
 
-      
+
   };
 
   render();
 
 };
+

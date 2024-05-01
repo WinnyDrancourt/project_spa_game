@@ -119,20 +119,20 @@ body {
   opacity: 1;
 }
 
-@media screen and (max-width: 992px) {
-  .cardGame {
-    width: calc(50% - 10px); /* Pour 2 éléments côte à côte sur des écrans plus petits */
-  }
-}
-@media screen and (max-width: 600px) {
-  .cardGame {
-    width: 100%; /* Pour 1 élément par ligne sur des écrans encore plus petits */
-  }
-}
 #page-content {
   margin: 0 10vh;
 }
 
+@media screen and (max-width: 600px) {
+  .cardGame {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 992px) {
+  .cardGame {
+    width: calc(50% - 10px);
+  }
+}
 .article h2 {
   font-size: 56px;
 }
