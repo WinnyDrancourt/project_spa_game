@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: './src/index.js',
@@ -20,11 +21,6 @@ module.exports = {
             presets: ['@babel/preset-env'],
           },
         },
-      },
-      {
-        test: /\.js$/,
-        use: [
-        ],
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -54,12 +50,28 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+            options: {
+              minimize: false,
+            },
+          },
+        ],
+      },
     ],
   },
   //plugins
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'bundle.css',
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: "src/assets/images", to: "images" } // Copie les images depuis src/assets/images vers dist/images
+      ],
     }),
   ],
   mode: 'development',

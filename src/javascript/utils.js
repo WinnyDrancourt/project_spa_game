@@ -1,28 +1,10 @@
-export const animateCards = () => {
-const isInViewport = (element) => {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-};
-
-// Fonction pour animer les cartes lors du défilement
-const animateCardsOnScroll = () => {
-    const cards = document.querySelectorAll('.cardGame');
-    cards.forEach((card) => {
-        if (isInViewport(card)) {
-            card.classList.add('animate'); // Ajoutez la classe pour déclencher l'animation
-        } else {
-            card.classList.remove('animate'); // Supprimez la classe si la carte n'est plus visible
-        }
-    });
-};
-
-// Écoutez l'événement de défilement pour déclencher l'animation
-window.addEventListener('scroll', animateCardsOnScroll);
+export const platformImages = {
+  pc: 'dist/images/pc.svg',//id 1
+  playstation: 'dist/images/playstation.svg',//id 2
+  xbox: 'dist/images/xbox.svg', // id 3
+  ios: 'dist/images/ios.svg', //id 4
+  mac: 'dist/images/mac.svg', // id 5
+  linux: 'dist/images/linux.svg', // id 6
+  nintendo: 'dist/images/nintendo.svg', // id 7
+  android: 'dist/images/android.svg',//id 8
 }
-
-

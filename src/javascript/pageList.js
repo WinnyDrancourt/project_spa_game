@@ -1,4 +1,6 @@
 import { fetchChoice, fetchGame } from "./api";
+import { API_KEY } from "./api_key";
+import { platformImages } from "./utils";
 
 const searchBox = document.getElementById('game-search'); 
 
@@ -33,11 +35,30 @@ export const PageList = (argument = '') => {
     }
     // ecoute de la barre de recherche
     const search = searchBox.value.trim();
-    // recuperation des Checkbox pour filtrer en fonction des plateformes
-    platformId = Array.from(document.querySelectorAll('#platform-filter input:checked')).map(checkbox => checkbox.value);
+    // recuperation du filtre de platforms
+    const platformDropdown = document.getElementById('platform-dropdown');
+    platformId = platformDropdown.value;
+    // dropdown trie
+    const orderDropdown = document.getElementById('order-dropdown');
+    const orderBy = orderDropdown.value;
+    const today = new Date().toISOString().split('T')[0];
+    let url = `https://api.rawg.io/api/games?key=${API_KEY}&dates=1990-01-01,${today}`;
+    if (orderBy === 'released') {
+      url += '&ordering=-released';
+    } else if (orderBy === 'rreleased') {
+      url += '&ordering=released';
+    } else if (orderBy === 'name') {
+      url += '&ordering=-name';
+    } else if (orderBy === 'rname') {
+      url += '&ordering=name';
+    } else if (orderBy === 'rating') {
+      url += '&ordering=-rating';
+    } else if (orderBy === 'rrating') {
+      url += '&ordering=rating';
+    }
 
     //Recuperation des resultats filtrer par l'api
-    let result = await fetchChoice(search, pageSize, platformId, devId, genreId, tagId);
+    let result = await fetchChoice(url, search, pageSize, platformId, devId, genreId, tagId);
     displayResults(result.results);
 
 
@@ -49,10 +70,14 @@ export const PageList = (argument = '') => {
       // ajout pour avoir des infos supplementaire non dispo en search
       let more = await fetchGame(article.id);
       let publisher = more.publishers.map(publisher=> publisher.name).join(', ');
-      const platformsList = article.parent_platforms.map(platform => platform.platform.name).join(', ');
+      const platformsList = article.parent_platforms.map(platform =>{
+        const name = platform.platform.slug.toLowerCase();
+        return platformImages.hasOwnProperty(name)
+          ? `<img class='platform-img' src="${platformImages[name]}">`:'';
+      }).join(', ');
       const genres = article.genres.map(genre=> genre.name).join(', ');
       return (
-        `<article class="cardGame" data-aos="flip-left" data-release-date='Release in : ${article.released}' data-publisher='Publishers : ${publisher}' data-genres='Genres : ${genres}'>
+        `<article class="cardGame" data-aos="zoom-in-left" data-release-date='Release in : ${article.released}' data-publisher='Publishers : ${publisher}' data-genres='Genres : ${genres}' data-rating='Rating : ${article.rating}'>
 <a href="#pagedetail/${article.id}"><img src="${article.background_image}"></a>
 <h1>${article.name}</h1>
 <p>Plateformes: ${platformsList}</p>
@@ -88,15 +113,25 @@ export const PageList = (argument = '') => {
 
   <div class="filter-container">
     <div id="platform-filter">
-      <h3>Platform :</h3>
-      <input type="checkbox" id="pc" value="1">
-      <label for="pc">PC</label>
-      <input type="checkbox" id="playstation" value="2">
-      <label for="playstation">PlayStation</label>
-      <input type="checkbox" id="xbox" value="3">
-      <label for="xbox">Xbox</label>
-      <input type="checkbox" id="nintendo" value="7">
-      <label for="nintendo">Nintendo</label>
+      <select id="platform-dropdown">
+        <option value="">Platform : any</option>
+        <option value="1,5,6">PC/Mac/Linux</option>
+        <option value="2">PlayStation</option>
+        <option value="3">Xbox</option>
+        <option value="7">Nintendo</option>
+        <option value="4,8">Android/Ios</option>
+      </select>
+    </div>
+    <div id="order-filter">
+      <select id="order-dropdown">
+        <option value="">Order by : any</option>
+        <option value="name">Name</option>
+        <option value="rname">Name reverse</option>
+        <option value="released">Release Date</option>
+        <option value="rreleased">Release Date reverse</option>
+        <option value="rating">Rating</option>
+        <option value="rrating">Reverse Rating</option>
+      </select>
     </div>
   </div>
   <div class="articles">Loading...</div>
@@ -109,13 +144,13 @@ export const PageList = (argument = '') => {
 
     searchBox.addEventListener('keyup', preparePage);
 
-    const platformCheckboxes = document.querySelectorAll('#platform-filter input');
-    platformCheckboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', preparePage);
-    });
+    const platformDropdown = document.getElementById('platform-dropdown');
+    platformDropdown.addEventListener('change', preparePage);
+
+    const orderDropdown = document.getElementById('order-dropdown');
+    orderDropdown.addEventListener('change', preparePage);
 
     preparePage();
-
 
   };
 

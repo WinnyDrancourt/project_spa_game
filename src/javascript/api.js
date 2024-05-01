@@ -1,29 +1,27 @@
 import { API_KEY } from "./api_key";
 
-const url = 'https://api.rawg.io/api/games'
-const today = new Date().toISOString().split('T')[0];
-const urlList = `https://api.rawg.io/api/games?key=${API_KEY}&ordering=-released&dates=1990-01-01,${today}`
+const urlG = 'https://api.rawg.io/api/games'
 
 export const fetchGame = async (argument) => {
-  const response = await fetch(`${url}/${argument}?key=${API_KEY}`);
+  const response = await fetch(`${urlG}/${argument}?key=${API_KEY}`);
   console.log(response);
   return response.json();
 };
 
 export const fetchGameTrailer = async (argument) => {
-  const response = await fetch(`${url}/${argument}/movies?key=${API_KEY}`);
+  const response = await fetch(`${urlG}/${argument}/movies?key=${API_KEY}`);
   console.log(response);
   return response.json();
 };
 
 export const fetchGameSreen = async (argument) => {
-  const response = await fetch(`${url}/${argument}/screenshots?key=${API_KEY}`);
+  const response = await fetch(`${urlG}/${argument}/screenshots?key=${API_KEY}`);
   console.log(response);
   return response.json();
 };
 
-export const fetchList = async (argument, pageSize, platId) => {
-  let fetchUrl = urlList;
+export const fetchList = async (url, argument, pageSize, platId) => {
+  let fetchUrl = url;
   if (argument.length === 0 && platId.length === 0){
     fetchUrl += `&page_size=${pageSize}`;
     console.log(fetchUrl);
@@ -42,7 +40,7 @@ export const fetchList = async (argument, pageSize, platId) => {
   return response.json();
 };
 
-export const fetchListDev = async (argument, pageSize, platId, devId) => {
+export const fetchListDev = async (url, argument, pageSize, platId, devId) => {
   let fetchUrl = url;
   if (argument.length === 0 && platId.length === 0){
     fetchUrl += `&page_size=${pageSize}&developers=${devId}`;
@@ -62,7 +60,7 @@ export const fetchListDev = async (argument, pageSize, platId, devId) => {
   return response.json();
 };
 
-export const fetchListGenres = async (argument, pageSize, platId, genreId) => {
+export const fetchListGenres = async (url, argument, pageSize, platId, genreId) => {
   let fetchUrl = url;
   if (argument.length === 0 && platId.length === 0){
     fetchUrl += `&page_size=${pageSize}&genres=${genreId}`;
@@ -82,7 +80,7 @@ export const fetchListGenres = async (argument, pageSize, platId, genreId) => {
   return response.json();
 };
 
-export const fetchListTag = async (argument, pageSize, platId, tagId) => {
+export const fetchListTag = async (url, argument, pageSize, platId, tagId) => {
   let fetchUrl = url;
   if (argument.length === 0 && platId.length === 0){
     fetchUrl += `&page_size=${pageSize}&tags=${tagId}`;
@@ -102,17 +100,17 @@ export const fetchListTag = async (argument, pageSize, platId, tagId) => {
   return response.json();
 };
 
-export const fetchChoice = async (search, pageSize, platId, devId, genreId, tagId)=>{
+export const fetchChoice = async (url, search, pageSize, platId, devId, genreId, tagId)=>{
   try {
     let list;
     if (devId !== null) {
-      return list = await fetchListDev(search,pageSize, platId, devId);
+      return list = await fetchListDev(url, search,pageSize, platId, devId);
     }else if (tagId !== null){
-      return list = await fetchListTag(search,pageSize, platId, tagId);
+      return list = await fetchListTag(url, search,pageSize, platId, tagId);
     }else if (genreId !== null){
-      return list = await fetchListGenres(search,pageSize, platId, genreId);
+      return list = await fetchListGenres(url, search,pageSize, platId, genreId);
     }else{
-      return list = await fetchList(search, pageSize, platId);
+      return list = await fetchList(url, search, pageSize, platId);
     }
   }catch (error){
     console.error('Error fetch :', error);

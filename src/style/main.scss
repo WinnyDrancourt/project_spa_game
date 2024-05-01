@@ -51,30 +51,55 @@ body {
   border-radius: 25px;
 }
 
-#platform-filter {
+%shadow {
+  box-shadow:
+    0.8px 0.8px 2.2px rgba(255, 255, 255, 0.004),
+    2px 2px 5.3px rgba(255, 255, 255, 0.008),
+    3.8px 3.8px 10px rgba(255, 255, 255, 0.014),
+    6.7px 6.7px 17.9px rgba(255, 255, 255, 0.021),
+    12.5px 12.5px 33.4px rgba(255, 255, 255, 0.032),
+    30px 30px 80px rgba(255, 255, 255, 0.07)
+    ;
+}
+
+.filter-container{
+  width: 100%;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 
-  input[type='checkbox'] {
-    background-color: transparent;
-    border: 1px solid $whiteColor;
-    border-radius: 10px;
-  }
+#platform-dropdown {
+  @extend %shadow;
+  border: 0px;
+  color: $whiteColor;
+  background-color: $redColor;
+  font-size: $textSize * 1.5;
+  cursor: pointer;
+  width: 15vh;
+  height: 50px;
+}
 
-  label{
-    margin: 0 5px 0 0;
-  }
-
-  h3 {
-    color: $redColor;
-    margin: 0 5px 0 0;
-  }
+#order-dropdown{
+  @extend %shadow;
+  border: 0px;
+  color: $whiteColor;
+  background-color: $redColor;
+  font-size: $textSize * 1.5;
+  cursor: pointer;
+  width: 15vh;
+  height: 50px;
 }
 
 .page-list{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.platform-img {
+  width:25px;
+  height:25px;
 }
 
 .articles {
@@ -97,6 +122,7 @@ body {
 }
 
 .show-more-btn {
+  @extend %shadow;
   margin-top: 25px;
   width: 220px;
   height: 50px;
@@ -118,7 +144,7 @@ body {
   position: relative;
 }
 .cardGame:hover::before {
-  content: attr(data-release-date) "\A " attr(data-publisher) "\A " attr(data-genres);
+  content: attr(data-release-date) "\A " attr(data-publisher) "\A " attr(data-genres) "\A " attr(data-rating);
   position: absolute;
   top: 0%;
   width: 100%;
